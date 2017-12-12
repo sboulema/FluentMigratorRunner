@@ -1,0 +1,6 @@
+/.vs
+/FluentMigratorRunner/.vs
+/FluentMigratorRunner/*.user
+/FluentMigratorRunner/bin
+/FluentMigratorRunner/obj
+/FluentMigratorRunner/packages

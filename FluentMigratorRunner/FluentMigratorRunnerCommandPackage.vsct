@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <Extern href="stdidcmd.h" />
+  <Extern href="vsshlids.h" />
+  <Include href="KnownImageIds.vsct" />
+
+  <Commands package="guidFluentMigratorRunnerCommandPackage">
+
+    <Menus>
+      <Menu guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenu" priority="0x0300" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+        <Strings>
+          <ButtonText>Fluent Migrator</ButtonText>
+          <CommandName>Fluent Migrator</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+    
+    <Groups>
+      
+      <Group guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" priority="0x0600">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenu" />
+      </Group>
+
+      <Group guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuSecondGroup" priority="0x0700">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenu" />
+      </Group>
+      
+    </Groups>
+
+    <Buttons>
+      
+      <Button guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="MigrateUpId" priority="0x0100" type="Button">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="Upload" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Migrate Up</ButtonText>
+        </Strings>
+      </Button>
+      
+      <Button guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="MigrateDownId" priority="0x0200" type="Button">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="Download" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Migrate Down</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="RollbackId" priority="0x0300" type="Button">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="Undo" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Rollback</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="ListMigrationsId" priority="0x0400" type="Button">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
+        <Icon guid="ImageCatalogGuid" id="ListView" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>List Migrations</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="OptionsId" priority="0x0500" type="Button">
+        <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuSecondGroup" />
+        <Icon guid="ImageCatalogGuid" id="Settings" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Options</ButtonText>
+        </Strings>
+      </Button>
+
+    </Buttons>
+    
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="guidFluentMigratorRunnerCommandPackage" value="{ef89b5ed-1477-474a-b897-ce28eed6ddeb}" />
+
+    <GuidSymbol name="guidFluentMigratorRunnerCommandPackageCmdSet" value="{ccb9de86-f9eb-4ca6-8f8d-6db0bb16bc28}">
+      <IDSymbol name="FluentMigratorRunnerMenu" value="0x1010" />
+      <IDSymbol name="FluentMigratorRunnerMenuGroup" value="0x1020" />
+      <IDSymbol name="FluentMigratorRunnerMenuSecondGroup" value="0x1030" />
+      
+      <IDSymbol name="MigrateUpId" value="0x0100" />
+      <IDSymbol name="MigrateDownId" value="0x0101" />
+      <IDSymbol name="RollbackId" value="0x0102" />
+      <IDSymbol name="ListMigrationsId" value="0x0103" />
+      <IDSymbol name="OptionsId" value="0x0104" />
+    </GuidSymbol>
+  </Symbols>
+  
+</CommandTable>
