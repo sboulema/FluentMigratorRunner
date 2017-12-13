@@ -4,7 +4,10 @@ Run Fluent Migrations from Visual Studio
 [![Beerpay](https://img.shields.io/beerpay/sboulema/FluentMigratorRunner.svg?style=flat)](https://beerpay.io/sboulema/FluentMigratorRunner)
 
 ## Links
-*Coming soon*
+
+[Github Releases](https://github.com/sboulema/FluentMigratorRunner/releases)
+
+[AppVeyor](https://ci.appveyor.com/project/sboulema/fluentmigratorrunner) [![Build status](https://ci.appveyor.com/api/projects/status/uf9da5f6mno3umhm?svg=true)](https://ci.appveyor.com/project/sboulema/fluentmigratorrunner)
 
 ## Features
 - List migrations
