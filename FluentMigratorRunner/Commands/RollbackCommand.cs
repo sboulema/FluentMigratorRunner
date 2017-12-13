@@ -1,14 +1,16 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.Windows.Forms;
+using EnvDTE;
+using FluentMigratorRunner.Dialogs;
+using FluentMigratorRunner.Helpers;
+using FluentMigratorRunner.Models;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace FluentMigratorRunner
 {
-    /// <summary>
-    /// Command handler
-    /// </summary>
     internal sealed class RollbackCommand
     {
         public const int CommandId = 0x0102;
@@ -52,26 +54,19 @@ namespace FluentMigratorRunner
             Instance = new RollbackCommand(package);
         }
 
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "FluentMigratorRunnerCommand";
+            var dte = ServiceProvider.GetService(typeof(DTE)) as DTE;
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            using (var form = new MigrationsDialog(dte))
+            {
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    var selectedVersion = form.SelectedVersion;
+                    ProjectHelper.Execute(ServiceProvider, TaskEnum.Rollback, selectedVersion);
+                }
+            }
         }
     }
 }

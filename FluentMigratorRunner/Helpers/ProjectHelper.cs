@@ -1,6 +1,10 @@
 ﻿using EnvDTE;
 using FluentMigratorRunner.Models;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using VSLangProj;
 using Process = System.Diagnostics.Process;
 
@@ -46,7 +50,7 @@ namespace FluentMigratorRunner.Helpers
                 case TaskEnum.MigrateDown:
                     return "migrate:down";
                 case TaskEnum.Rollback:
-                    return "rollback";
+                    return "rollback:toversion";
                 case TaskEnum.ListMigrations:
                     return "listmigrations";
                 default:
@@ -54,17 +58,84 @@ namespace FluentMigratorRunner.Helpers
             }
         }
 
-        public static void Execute(DTE dte, DbEnum db, string connection, TaskEnum task)
+        private static string GetVersion(string version) => 
+            string.IsNullOrEmpty(version) ? string.Empty : $"--version={version}";
+
+        private static void BuildProject(DTE dte, Project project)
+        {
+            var solutionBuild = dte.Solution.SolutionBuild;
+            solutionBuild.BuildProject(solutionBuild.ActiveConfiguration.Name, project.UniqueName, true);
+        }
+
+        public static void Execute(IServiceProvider serviceProvider, TaskEnum task, string version = "")
+        {
+            var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
+            OptionsHelper.Dte = dte;
+            var options = OptionsHelper.GetOptions();
+
+            Execute(dte, options.DbType, options.Connection, task, version);
+        }
+
+        private static void Execute(DTE dte, DbEnum db, string connection, TaskEnum task, string version)
         {
             var project = GetSelectedProject(dte);
 
             if (project == null) return;
 
+            BuildProject(dte, project);
+
             var assembly = GetProjectAssemblyPath(project);
             var migrate = GetMigratePath(project);
             var taskArgument = GetTask(task);
+            var versionArgument = GetVersion(version);
 
-            Process.Start("cmd.exe", $@"/k """"{migrate}"" -c=""{connection}"" -db={db} --task:{taskArgument} -target=""{assembly}""");
+            Process.Start("cmd.exe", $@"/k """"{migrate}"" -c=""{connection}"" -db={db} --task:{taskArgument} {versionArgument} -target=""{assembly}""");
+        }
+
+        public static List<string> GetMigrations(DTE dte)
+        {
+            var migrations = new List<string>();
+
+            OptionsHelper.Dte = dte;
+            var options = OptionsHelper.GetOptions();
+
+            var project = GetSelectedProject(dte);
+
+            if (project == null) return migrations;
+
+            BuildProject(dte, project);
+
+            var assembly = GetProjectAssemblyPath(project);
+            var migrate = GetMigratePath(project);
+
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $@"/k """"{migrate}"" -c=""{options.Connection}"" -db={options.DbType} --task:listmigrations -target=""{assembly}""",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                }
+            };
+            process.Start();
+
+            while (!process.StandardOutput.EndOfStream)
+            {
+                var line = process.StandardOutput.ReadLine();
+
+                if (string.IsNullOrEmpty(line)) break;
+
+                var match = Regex.Match(line, @"\[\+\] (\d*):");
+                if (match.Success)
+                {
+                    migrations.Add(match.Groups[1].Value);
+                }
+            }
+
+            return migrations;
         }
     }
 }

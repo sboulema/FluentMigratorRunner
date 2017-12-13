@@ -14,6 +14,9 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\FluentMigratorRunner.ico</ApplicationIcon>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -58,6 +61,12 @@
     <Compile Include="Commands\OptionsCommand.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="Commands\MigrateUpCommand.cs" />
+    <Compile Include="Dialogs\MigrationsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\MigrationsDialog.Designer.cs">
+      <DependentUpon>MigrationsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\OptionsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +212,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Dialogs\MigrationsDialog.resx">
+      <DependentUpon>MigrationsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\OptionsDialog.resx">
       <DependentUpon>OptionsDialog.cs</DependentUpon>
     </EmbeddedResource>

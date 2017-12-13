@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="FluentMigratorRunner.1bb58302-05fb-4ce7-9c09-deef420e262c" Version="1.0" Language="en-US" Publisher="Samir Boulema (PM)" />
+        <Identity Id="FluentMigratorRunner.1bb58302-05fb-4ce7-9c09-deef420e262c" Version="1.0" Language="en-US" Publisher="Samir Boulema" />
         <DisplayName>FluentMigratorRunner</DisplayName>
         <Description xml:space="preserve">Run Fluent Migrations from Visual Studio</Description>
         <License>Resources\License.txt</License>

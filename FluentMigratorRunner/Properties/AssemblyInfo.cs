@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FluentMigratorRunner")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Fluent Migrator Runner")]
+[assembly: AssemblyDescription("Run Fluent Migrations from Visual Studio")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FluentMigratorRunner")]
+[assembly: AssemblyCompany("Samir L. Boulema")]
+[assembly: AssemblyProduct("Fluent Migrator Runner")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using EnvDTE;
 using FluentMigratorRunner.Helpers;
 using FluentMigratorRunner.Models;
 using Microsoft.VisualStudio.Shell;
@@ -50,13 +49,7 @@ namespace FluentMigratorRunner
             Instance = new ListMigrationsCommand(package);
         }
 
-        private void MenuItemCallback(object sender, EventArgs e)
-        {
-            var dte = ServiceProvider.GetService(typeof(DTE)) as DTE;
-            OptionsHelper.Dte = dte;
-            var options = OptionsHelper.GetOptions();
-
-            ProjectHelper.Execute(dte, options.DbType, options.Connection, TaskEnum.ListMigrations);
-        }
+        private void MenuItemCallback(object sender, EventArgs e) => 
+            ProjectHelper.Execute(ServiceProvider, TaskEnum.ListMigrations);
     }
 }
