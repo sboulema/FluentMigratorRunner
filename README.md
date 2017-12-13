@@ -7,6 +7,8 @@ Run Fluent Migrations from Visual Studio
 
 [Github Releases](https://github.com/sboulema/FluentMigratorRunner/releases)
 
+[Open VSIX Gallery](http://vsixgallery.com/extension/FluentMigratorRunner.1bb58302-05fb-4ce7-9c09-deef420e262c/)
+
 [AppVeyor](https://ci.appveyor.com/project/sboulema/fluentmigratorrunner) [![Build status](https://ci.appveyor.com/api/projects/status/uf9da5f6mno3umhm?svg=true)](https://ci.appveyor.com/project/sboulema/fluentmigratorrunner)
 
 ## Features
