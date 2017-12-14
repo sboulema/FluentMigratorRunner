@@ -1,18 +1,22 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
+using EnvDTE;
+using FluentMigratorRunner.Helpers;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace FluentMigratorRunner
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(FluentMigratorRunnerCommandPackage.PackageGuidString)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [Guid(PackageGuidString)]
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     public sealed class FluentMigratorRunnerCommandPackage : Package
     {
         public const string PackageGuidString = "ef89b5ed-1477-474a-b897-ce28eed6ddeb";
+        public readonly Guid FluentMigratorRunnerCommandPackageCmdSetGuidString = new Guid("ccb9de86-f9eb-4ca6-8f8d-6db0bb16bc28");
 
         public FluentMigratorRunnerCommandPackage()
         {
@@ -30,6 +34,13 @@ namespace FluentMigratorRunner
         /// </summary>
         protected override void Initialize()
         {
+            // Initialize the Fluent Migrator Menu, should only be visible for projects with FluentMigrator reference
+            var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var menuCommandId = new CommandID(FluentMigratorRunnerCommandPackageCmdSetGuidString, 0x1010);
+            var menuItem = new OleMenuCommand(null, menuCommandId);
+            menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
+            mcs.AddCommand(menuItem);
+
             MigrateUpCommand.Initialize(this);
             MigrateDownCommand.Initialize(this);
             RollbackCommand.Initialize(this);
@@ -37,6 +48,9 @@ namespace FluentMigratorRunner
             OptionsCommand.Initialize(this);
             base.Initialize();           
         }
+
+        private void MenuItem_BeforeQueryStatus(object sender, EventArgs e) =>
+            ((OleMenuCommand)sender).Visible = ProjectHelper.ShouldMenuBeVisible(GetService(typeof(DTE)) as DTE);
 
         #endregion
     }

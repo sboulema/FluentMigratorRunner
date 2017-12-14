@@ -2,7 +2,7 @@
 {
     public class Options
     {
-        public string Connection;
-        public DbEnum DbType;
+        public string Connection { get; set; }
+        public DbEnum DbType { get; set; }
     }
 }

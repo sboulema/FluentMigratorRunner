@@ -9,14 +9,14 @@ namespace FluentMigratorRunner.Dialogs
     public partial class OptionsDialog : Form
     {
         private Options _options;
+        private DTE _dte;
 
         public OptionsDialog(DTE dte)
         {
             InitializeComponent();
 
-            OptionsHelper.Dte = dte;
-
-            _options = OptionsHelper.GetOptions();
+            _dte = dte;
+            _options = OptionsHelper.GetOptions(dte);
             ConnectionStringTextBox.Text = _options.Connection;
 
             DbTypeComboBox.Items.AddRange(Enum.GetNames(typeof(DbEnum)));
@@ -32,7 +32,7 @@ namespace FluentMigratorRunner.Dialogs
         {
             _options.Connection = ConnectionStringTextBox.Text;
             _options.DbType = (DbEnum)Enum.Parse(typeof(DbEnum), DbTypeComboBox.Text);
-            OptionsHelper.SaveOptions(_options);
+            OptionsHelper.SaveOptions(_dte, _options);
             Close();
         }
     }

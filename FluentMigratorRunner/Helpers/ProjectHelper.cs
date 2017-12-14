@@ -33,7 +33,22 @@ namespace FluentMigratorRunner.Helpers
             return null;
         }
 
-        private static string GetMigratePath(Project project)
+        /// <summary>
+        /// Fluent Migrator menu should only be visible if we can find a reference 
+        /// to the Fluent Migrator Nuget package
+        /// </summary>
+        /// <param name="dte"></param>
+        /// <returns></returns>
+        public static bool ShouldMenuBeVisible(DTE dte) => 
+            !string.IsNullOrEmpty(GetMigratePath(GetSelectedProject(dte)));
+
+        /// <summary>
+        /// Given a project find a reference to the FluentMigrator Nuget package 
+        /// and create the the path to the include Migrate executable
+        /// </summary>
+        /// <param name="project">A DTE project</param>
+        /// <returns></returns>
+        public static string GetMigratePath(Project project)
         {
             var path = (project.Object as VSProject)?.References.Find("FluentMigrator")?.Path;
             if (string.IsNullOrEmpty(path)) return string.Empty;
@@ -70,8 +85,7 @@ namespace FluentMigratorRunner.Helpers
         public static void Execute(IServiceProvider serviceProvider, TaskEnum task, string version = "")
         {
             var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
-            OptionsHelper.Dte = dte;
-            var options = OptionsHelper.GetOptions();
+            var options = OptionsHelper.GetOptions(dte);
 
             Execute(dte, options.DbType, options.Connection, task, version);
         }
@@ -96,8 +110,7 @@ namespace FluentMigratorRunner.Helpers
         {
             var migrations = new List<string>();
 
-            OptionsHelper.Dte = dte;
-            var options = OptionsHelper.GetOptions();
+            var options = OptionsHelper.GetOptions(dte);
 
             var project = GetSelectedProject(dte);
 

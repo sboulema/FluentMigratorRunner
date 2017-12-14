@@ -9,6 +9,8 @@
     <Menus>
       <Menu guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenu" priority="0x0300" type="Menu">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Fluent Migrator</ButtonText>
           <CommandName>Fluent Migrator</CommandName>
@@ -34,6 +36,7 @@
         <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="Upload" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Migrate Up</ButtonText>
         </Strings>
@@ -43,6 +46,7 @@
         <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="Download" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Migrate Down</ButtonText>
         </Strings>
@@ -52,6 +56,7 @@
         <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="Undo" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Rollback</ButtonText>
         </Strings>
@@ -61,6 +66,7 @@
         <Parent guid="guidFluentMigratorRunnerCommandPackageCmdSet" id="FluentMigratorRunnerMenuGroup" />
         <Icon guid="ImageCatalogGuid" id="ListView" />
         <CommandFlag>IconIsMoniker</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>List Migrations</ButtonText>
         </Strings>

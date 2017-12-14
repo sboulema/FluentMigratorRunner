@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using System.Globalization;
 using System.Windows.Forms;
 using EnvDTE;
 using FluentMigratorRunner.Dialogs;
 using FluentMigratorRunner.Helpers;
 using FluentMigratorRunner.Models;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace FluentMigratorRunner
 {
@@ -15,25 +13,25 @@ namespace FluentMigratorRunner
     {
         public const int CommandId = 0x0102;
         public static readonly Guid CommandSet = new Guid("ccb9de86-f9eb-4ca6-8f8d-6db0bb16bc28");
-        private readonly Package package;
+        private readonly Package _package;
+        private readonly DTE _dte;
 
         private RollbackCommand(Package package)
         {
-            if (package == null)
-            {
-                throw new ArgumentNullException("package");
-            }
+            _package = package ?? throw new ArgumentNullException("package");
+            _dte = ServiceProvider.GetService(typeof(DTE)) as DTE;
 
-            this.package = package;
-
-            OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if (commandService != null)
+            if (ServiceProvider.GetService(typeof(IMenuCommandService)) is OleMenuCommandService commandService)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
+                var menuItem = new OleMenuCommand(MenuItemCallback, menuCommandID);
+                menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
                 commandService.AddCommand(menuItem);
             }
         }
+
+        private void MenuItem_BeforeQueryStatus(object sender, EventArgs e) => 
+            ((OleMenuCommand)sender).Enabled = OptionsHelper.AllOptionsAreSet(_dte);
 
         public static RollbackCommand Instance
         {
@@ -45,7 +43,7 @@ namespace FluentMigratorRunner
         {
             get
             {
-                return this.package;
+                return this._package;
             }
         }
 
