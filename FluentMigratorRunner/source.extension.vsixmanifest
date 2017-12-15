@@ -4,6 +4,7 @@
         <Identity Id="FluentMigratorRunner.1bb58302-05fb-4ce7-9c09-deef420e262c" Version="1.0" Language="en-US" Publisher="Samir L. Boulema" />
         <DisplayName>FluentMigratorRunner</DisplayName>
         <Description xml:space="preserve">Run Fluent Migrations from Visual Studio</Description>
+        <MoreInfo>https://marketplace.visualstudio.com/items?itemName=SamirBoulema.FluentMigratorRunner</MoreInfo>
         <License>Resources\License.txt</License>
         <GettingStartedGuide>https://github.com/sboulema/FluentMigratorRunner/blob/master/README.md</GettingStartedGuide>
         <ReleaseNotes>https://github.com/sboulema/FluentMigratorRunner/releases</ReleaseNotes>

@@ -42,7 +42,7 @@
             this.MigrationsComboBox.FormattingEnabled = true;
             this.MigrationsComboBox.Location = new System.Drawing.Point(15, 25);
             this.MigrationsComboBox.Name = "MigrationsComboBox";
-            this.MigrationsComboBox.Size = new System.Drawing.Size(209, 21);
+            this.MigrationsComboBox.Size = new System.Drawing.Size(277, 21);
             this.MigrationsComboBox.TabIndex = 0;
             // 
             // label1
@@ -57,7 +57,7 @@
             // CancelButton
             // 
             this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CancelButton.Location = new System.Drawing.Point(149, 67);
+            this.CancelButton.Location = new System.Drawing.Point(217, 71);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(75, 23);
             this.CancelButton.TabIndex = 2;
@@ -68,7 +68,7 @@
             // OkButton
             // 
             this.OkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OkButton.Location = new System.Drawing.Point(68, 67);
+            this.OkButton.Location = new System.Drawing.Point(136, 71);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 3;
@@ -80,7 +80,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(236, 104);
+            this.ClientSize = new System.Drawing.Size(304, 108);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.label1);
