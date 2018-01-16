@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using VSLangProj;
 using Process = System.Diagnostics.Process;
 
@@ -35,12 +37,12 @@ namespace FluentMigratorRunner.Helpers
 
         /// <summary>
         /// Fluent Migrator menu should only be visible if we can find a reference 
-        /// to the Fluent Migrator Nuget package
+        /// to the Fluent Migrator NuGet package
         /// </summary>
         /// <param name="dte"></param>
         /// <returns></returns>
-        public static bool ShouldMenuBeVisible(DTE dte) => 
-            !string.IsNullOrEmpty(GetMigratePath(GetSelectedProject(dte)));
+        public static bool ShouldMenuBeVisible(DTE dte) =>
+            HasFluentMigratorReference(GetSelectedProject(dte));
 
         /// <summary>
         /// Given a project find a reference to the FluentMigrator Nuget package 
@@ -50,10 +52,58 @@ namespace FluentMigratorRunner.Helpers
         /// <returns></returns>
         public static string GetMigratePath(Project project)
         {
+            var path = GetMigratePathForFrameWorkProject(project);
+
+            if (!string.IsNullOrEmpty(path)) return path;
+
+            path = GetMigratePathForCoreProject(project);
+
+            return path;
+        }
+
+        private static string GetMigratePathForFrameWorkProject(Project project)
+        {
             var path = (project.Object as VSProject)?.References.Find("FluentMigrator")?.Path;
             if (string.IsNullOrEmpty(path)) return string.Empty;
 
             return Path.Combine(Path.GetDirectoryName(path), @"..\..\", @"tools\Migrate.exe");
+        }
+
+        private static string GetMigratePathForCoreProject(Project project)
+        {
+            var nugetFile = Path.Combine(Path.GetDirectoryName(project.FileName), "obj", 
+                Path.GetFileNameWithoutExtension(project.FileName) + ".csproj.nuget.g.props");
+            var nugetPackageRoot = XDocument.Load(nugetFile).Root.DescendantNodes().OfType<XElement>()
+                .First(x => x.Name.LocalName.Equals("NuGetPackageFolders"))
+                .Value.Split(';').FirstOrDefault();
+            if (string.IsNullOrEmpty(nugetPackageRoot)) return string.Empty;
+
+            var fluentMigratorVersion = GetFluentMigratorReferenceForCoreProject(project).Attribute("Version").Value;
+
+            return Path.Combine(nugetPackageRoot, "FluentMigrator", fluentMigratorVersion, @"tools\Migrate.exe");
+        }
+
+        private static XElement GetFluentMigratorReferenceForCoreProject(Project project) =>
+            XDocument.Load(project.FileName).Root.DescendantNodes().OfType<XElement>()
+                .FirstOrDefault(x => x.Name.LocalName.Equals("PackageReference") &&
+                                     x.Attribute("Include").Value.Equals("FluentMigrator"));
+
+        /// <summary>
+        /// Check if the given project either has a reference or a dependency on the NuGet FluentMigrator package
+        /// </summary>
+        /// <param name="project">A DTE project</param>
+        /// <returns></returns>
+        private static bool HasFluentMigratorReference(Project project)
+        {
+            var hasReference = (project.Object as VSProject)?.References.Find("FluentMigrator") != null;
+
+            if (hasReference) return hasReference;
+
+            hasReference = XDocument.Load(project.FileName).Root.DescendantNodes().OfType<XElement>()
+                .Any(x => x.Name.LocalName.Equals("PackageReference") &&
+                          x.Attribute("Include").Value.Equals("FluentMigrator"));
+
+            return hasReference;
         }
 
         private static string GetTask(TaskEnum task)

@@ -13,7 +13,8 @@ Run Fluent Migrations from Visual Studio
 [AppVeyor](https://ci.appveyor.com/project/sboulema/fluentmigratorrunner) [![Build status](https://ci.appveyor.com/api/projects/status/uf9da5f6mno3umhm?svg=true)](https://ci.appveyor.com/project/sboulema/fluentmigratorrunner)
 
 ## First usage
-- Right-click your Migrations project
+- Right-click your Migrations project 
+  - Project must have a NuGet reference/dependency to FluentMigrator
 - Go to the options dialog
 - Set your database connection string
 - Set your database type
