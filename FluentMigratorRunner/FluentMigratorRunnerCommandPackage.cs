@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace FluentMigratorRunner
 {
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuidString)]
-    [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
-    public sealed class FluentMigratorRunnerCommandPackage : Package
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
+    public sealed class FluentMigratorRunnerCommandPackage : AsyncPackage
     {
         public const string PackageGuidString = "ef89b5ed-1477-474a-b897-ce28eed6ddeb";
         public readonly Guid FluentMigratorRunnerCommandPackageCmdSetGuidString = new Guid("ccb9de86-f9eb-4ca6-8f8d-6db0bb16bc28");
@@ -32,13 +32,21 @@ namespace FluentMigratorRunner
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initialization code that rely on services provided by VisualStudio.
         /// </summary>
-        protected override void Initialize()
+        protected override async System.Threading.Tasks.Task InitializeAsync(System.Threading.CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             // Initialize the Fluent Migrator Menu, should only be visible for projects with FluentMigrator reference
-            var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var mcs = await GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             var menuCommandId = new CommandID(FluentMigratorRunnerCommandPackageCmdSetGuidString, 0x1010);
             var menuItem = new OleMenuCommand(null, menuCommandId);
             menuItem.BeforeQueryStatus += MenuItem_BeforeQueryStatus;
+
+            await base.InitializeAsync(cancellationToken, progress);
+
+            // When initialized asynchronously, we *may* be on a background thread at this point.
+            // Do any initialization that requires the UI thread after switching to the UI thread.
+            // Otherwise, remove the switch to the UI thread if you don't need it.
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
             mcs.AddCommand(menuItem);
 
             MigrateUpCommand.Initialize(this);
@@ -46,7 +54,6 @@ namespace FluentMigratorRunner
             RollbackCommand.Initialize(this);
             ListMigrationsCommand.Initialize(this);
             OptionsCommand.Initialize(this);
-            base.Initialize();           
         }
 
         private void MenuItem_BeforeQueryStatus(object sender, EventArgs e) =>
