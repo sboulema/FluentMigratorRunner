@@ -10,7 +10,7 @@
         <ReleaseNotes>https://github.com/sboulema/FluentMigratorRunner/releases</ReleaseNotes>
         <Icon>Resources\FluentMigratorRunner.ico</Icon>
         <PreviewImage>Resources\FluentMigratorRunner.png</PreviewImage>
-        <Tags>Fluent, Migrator, Database, db, source control, migrations</Tags>
+        <Tags>FluentMigrator, Database, migrations</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)" />
