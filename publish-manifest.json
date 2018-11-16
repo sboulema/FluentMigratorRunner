@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/vsix-publish",
-  "categories": [ "data", "database", "source control" ],
+  "categories": [ "database" ],
   "identity": {
     "internalName": "FluentMigratorRunner"
   },
